@@ -6,7 +6,7 @@ screen = pygame.display.set_mode((400, 400))
 FPS = 30
 color = {'yellow': (242, 245, 66), 'red': (255, 0, 0), 'black': (0, 0, 0)}
 
-screen.fill((120, 120, 120))
+screen.fill((120, 120, 120))  # закрасили фон серым цветом
 
 
 def drow_circle(color, x, y, r):
@@ -24,13 +24,13 @@ def drow_circle(color, x, y, r):
 def drow_line(color, x, y, x1, y1=0, width=1, incline=False):
     """
     рисуем линии (брови и рот смайлика)
-    :param incline: наклон
+    :param incline: наклон (да/нет)
     :param width: ширина линии
     :param x1: новая координата (конец линии)
     :param y1: новая координата (конец линии)
     :param color: цвет линии
-    :param x: координата х
-    :param y: координата у
+    :param x: координата х (начало линии)
+    :param y: координата у (начало линии)
     :return:  None
     """
     if not incline:
