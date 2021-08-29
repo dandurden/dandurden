@@ -51,6 +51,23 @@ def draw_house(x, y, wedth, height):
     rect(screen, color['blue'], (x + wedth/4, y + height/3, wedth/2, height/3))  # (окно)
 
 
+def draw_frees(x, y, r):
+    """
+    эта функция рисует деревья
+    :param x: координата х
+    :param y: координата у
+    :param r: радиус круга дерева (листва)
+    :return:
+    """
+    for i in [0 * r, r, 2 * r, 2.5 * r]:
+        if i == r or i == 2.5 * r:
+            circle(screen, color['dark_green'], (x - r, y + i), r)
+            circle(screen, color['dark_green'], (x + r, y + i), r)
+        else:
+            circle(screen, color['dark_green'], (x, y + i), r)
+    line(screen, color['ligth_brown'], (x, y + 3*r), (x, y + 6*r), r)
+
+
 draw_cloud(100, 90, 20)
 draw_cloud(400, 135, 15)
 draw_cloud(650, 100, 20)
@@ -60,6 +77,9 @@ circle(screen, color['yellow'], (35, 35), 25)
 draw_house(70, 350, 200, 180)
 # рисуем дом 2
 draw_house(500, 250, 140, 120)
+# рисуем деревья
+draw_frees(350, 250, 30)
+draw_frees(720, 200, 20)
 
 pygame.display.update()
 clock = pygame.time.Clock()
