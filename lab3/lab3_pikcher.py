@@ -17,33 +17,39 @@ color = {'yellow': (242, 245, 66),
 # закрасили фон
 screen.fill((174, 244, 245))
 # нарисовали траву
-rect(screen, color['green'], ((0, y/2), (x, y/2)))
-# нарисовал облако
-for i in [0, 20, 40, 60]:
-    if i == 20 or i == 40:
-        circle(screen, color['white'], (x/8+i, y/6), 20)
-        circle(screen, color['white'], (x / 8 + i, y / 6-20), 20)
+rect(screen, color['green'], ((0, y / 2), (x, y / 2)))
+
+
+def draw_cloud(x, y, r):
+    """
+
+    :param x: координата х
+    :param y: координата у
+    :param r: радиус облачка
+    :return:
+    """
+    if r > 15:
+        for i in [0, 20, 40, 60]:
+            if i == 20 or i == 40:
+                circle(screen, color['white'], (x + i, y), r)
+                circle(screen, color['white'], (x + i, y - r), r)
+            else:
+                circle(screen, color['white'], (x + i, y), r)
     else:
-        circle(screen, color['white'], (x / 8 + i, y / 6), 20)
-# нарисовал облако
-for i in [0, 15, 30, 45]:
-    if i == 15 or i == 30:
-        circle(screen, color['white'], (x/2+i, y/5), 15)
-        circle(screen, color['white'], (x / 2 + i, y / 5 -15), 15)
-    else:
-        circle(screen, color['white'], (x / 2 + i, y / 5), 15)
-# нарисовал облако
-for i in [0, 20, 40, 60]:
-    if i == 20 or i == 40:
-        circle(screen, color['white'], (x/1.2 + i, y/6), 20)
-        circle(screen, color['white'], (x / 1.2 + i, y / 6-20), 20)
-    else:
-        circle(screen, color['white'], (x / 1.2 + i, y / 6), 20)
+        for i in [0, 15, 30, 45]:
+            if i == 15 or i == 30:
+                circle(screen, color['white'], (x + i, y), r)
+                circle(screen, color['white'], (x + i, y - r), r)
+            else:
+                circle(screen, color['white'], (x + i, y), r)
+
+
+draw_cloud(100, 90, 20)
+draw_cloud(400, 135, 15)
+draw_cloud(650, 100, 20)
 # нарисовал солнце
 circle(screen, color['yellow'], (35, 35), 25)
 # рисуем дом
-
-
 
 
 pygame.display.update()
