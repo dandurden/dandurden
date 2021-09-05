@@ -4,7 +4,7 @@ from random import randint
 
 pygame.init()
 
-FPS = 2
+FPS = 30
 screen = pygame.display.set_mode((1200, 900))
 
 RED = (255, 0, 0)
@@ -33,20 +33,31 @@ class NewBall:
     """
 
     def __init__(self):
-        self.x = randint(600, 1100)
-        self.y = randint(400, 800)
+        self.speedx = 5
+        self.speedy = 3
+        self.x = randint(903, 1097)
+        self.y = randint(603, 797)
         self.r = randint(50, 100)
         self.color = COLORS[randint(0, 5)]
         self.xmax = self.x + self.r
         self.xmin = self.x - self.r
         self.ymax = self.y + self.r
         self.ymin = self.y - self.r
-        self.counter = 0
 
     def new_ball(self):
         '''рисует новый шарик '''
         circle(screen, self.color, (self.x, self.y), self.r)
 
+    def move_ball(self):
+        """двигает шарик и отражает от стен"""
+        self.x += self.speedx
+        self.y += self.speedy
+        if self.y + self.r >= 900 or self.y - self.r <= 0:
+            self.speedy *= -1
+        if self.x + self.r >= 1200 or self.x - self.r <= 0:
+            self.speedx *= -1
+
+ball_1 = NewBall()
 
 game = Newgame()
 pygame.display.update()
@@ -55,18 +66,20 @@ finished = False
 
 while not finished:
     clock.tick(FPS)
-    ball = NewBall()  # создали экземпляр класса
-    ball.new_ball()  # создаем новый шарик
+
+    ball_1.new_ball()  # создаем новый шарик
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
-        elif event.type == pygame.MOUSEBUTTONDOWN:  # если кликнули мышкой
-            if ball.xmin < event.pos[0] < ball.xmax and \
-                    ball.ymin < event.pos[1] < ball.ymax:  # и клик попал в диапазон (площадь) шарика
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            print((ball_1.xmax, ball_1.ymax, ball_1.xmin, ball_1.ymin))# если кликнули мышкой
+            if ball_1.xmin < event.pos[0] < ball_1.xmax and \
+                    ball_1.ymin < event.pos[1] < ball_1.ymax:  # и клик попал в диапазон (площадь) шарика
                 game + 1
                 print(game.score)
                 pygame.display.update()
-
+    ball_1.move_ball()
     pygame.display.update()
     screen.fill(BLACK)
 
