@@ -33,10 +33,10 @@ class NewBall:
     """
 
     def __init__(self):
-        self.speedx = 5
-        self.speedy = 3
-        self.x = randint(903, 1097)
-        self.y = randint(603, 797)
+        self.speedx = randint(5, 30)
+        self.speedy = randint(5, 30)
+        self.x = randint(103, 1097)
+        self.y = randint(103, 797)
         self.r = randint(50, 100)
         self.color = COLORS[randint(0, 5)]
         self.xmax = self.x + self.r
@@ -56,9 +56,12 @@ class NewBall:
             self.speedy *= -1
         if self.x + self.r >= 1200 or self.x - self.r <= 0:
             self.speedx *= -1
-
+# balls создать список шариков
 ball_1 = NewBall()
-
+ball_2 = NewBall()
+ball_3 = NewBall()
+ball_4 = NewBall()
+ball_5 = NewBall()
 game = Newgame()
 pygame.display.update()
 clock = pygame.time.Clock()
@@ -68,7 +71,10 @@ while not finished:
     clock.tick(FPS)
 
     ball_1.new_ball()  # создаем новый шарик
-
+    ball_2.new_ball()
+    ball_3.new_ball()
+    ball_4.new_ball()
+    ball_5.new_ball()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
@@ -80,6 +86,10 @@ while not finished:
                 print(game.score)
                 pygame.display.update()
     ball_1.move_ball()
+    ball_2.move_ball()
+    ball_3.move_ball()
+    ball_4.move_ball()
+    ball_5.move_ball()
     pygame.display.update()
     screen.fill(BLACK)
 
