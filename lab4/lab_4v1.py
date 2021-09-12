@@ -19,8 +19,9 @@ COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 
 class Newgame:
 
-    def __init__(self):
+    def __init__(self, name='player'):
         self.score = 0
+        self.name = input('имя нового игрока: ')
 
     def __add__(self, other):
         self.score += other
@@ -33,20 +34,20 @@ class NewBall:
     """
 
     def __init__(self):
-        self.speedx = randint(5, 30)
-        self.speedy = randint(5, 30)
+
+        self.speedx = randint(5, 10)
+        self.speedy = randint(5, 10)
         self.x = randint(103, 1097)
         self.y = randint(103, 797)
         self.r = randint(50, 100)
         self.color = COLORS[randint(0, 5)]
-        self.xmax = self.x + self.r
-        self.xmin = self.x - self.r
-        self.ymax = self.y + self.r
-        self.ymin = self.y - self.r
 
     def new_ball(self):
         '''рисует новый шарик '''
         circle(screen, self.color, (self.x, self.y), self.r)
+
+    def new_fig(self):
+        rect(screen, self.color, (self.x, self.y, self.r, self.r))
 
     def move_ball(self):
         """двигает шарик и отражает от стен"""
@@ -56,12 +57,19 @@ class NewBall:
             self.speedy *= -1
         if self.x + self.r >= 1200 or self.x - self.r <= 0:
             self.speedx *= -1
+
+    def move_fig(self):
+        """двигает квадрат и отражает от стен"""
+        self.x += self.speedx
+        self.y += self.speedy
+        if self.y + self.r >= 900 or self.y <= 0:
+            self.speedy *= -1
+        if self.x + self.r >= 1200 or self.x <= 0:
+            self.speedx *= -1
+
 # balls создать список шариков
-ball_1 = NewBall()
-ball_2 = NewBall()
-ball_3 = NewBall()
-ball_4 = NewBall()
-ball_5 = NewBall()
+balls = [NewBall(), NewBall(), NewBall(), NewBall(), NewBall()]
+fig = NewBall()
 game = Newgame()
 pygame.display.update()
 clock = pygame.time.Clock()
@@ -69,28 +77,36 @@ finished = False
 
 while not finished:
     clock.tick(FPS)
-
-    ball_1.new_ball()  # создаем новый шарик
-    ball_2.new_ball()
-    ball_3.new_ball()
-    ball_4.new_ball()
-    ball_5.new_ball()
+    for ball in balls[:3]:
+        ball.new_ball()
+    for fig in balls[3:]:
+        fig.new_fig()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            print((ball_1.xmax, ball_1.ymax, ball_1.xmin, ball_1.ymin))# если кликнули мышкой
-            if ball_1.xmin < event.pos[0] < ball_1.xmax and \
-                    ball_1.ymin < event.pos[1] < ball_1.ymax:  # и клик попал в диапазон (площадь) шарика
-                game + 1
-                print(game.score)
-                pygame.display.update()
-    ball_1.move_ball()
-    ball_2.move_ball()
-    ball_3.move_ball()
-    ball_4.move_ball()
-    ball_5.move_ball()
+            pos = pygame.mouse.get_pos()
+
+            for ball in balls:
+
+                if ball.x - ball.r < pos[0] < ball.x + ball.r and \
+                        ball.y - ball.r < pos[1] < ball.y + ball.r:  # и клик попал в диапазон (площадь) шарика
+                    if ball in balls[:3]:
+                        game + 1
+                        print(f"{game.name} = {game.score}")
+                        pygame.display.update()
+
+                    else:
+                        game + 5
+                        print(f"{game.name} = {game.score}")
+                        pygame.display.update()
+
+    for ball in balls[:3]:
+        ball.move_ball()
+    for fig in balls[3:]:
+        fig.move_fig()
     pygame.display.update()
+
     screen.fill(BLACK)
 
 pygame.quit()
