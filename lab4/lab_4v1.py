@@ -19,7 +19,7 @@ COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
 
 class Newgame:
 
-    def __init__(self, name='player'):
+    def __init__(self):
         self.score = 0
         self.name = input('имя нового игрока: ')
 
@@ -77,36 +77,33 @@ finished = False
 
 while not finished:
     clock.tick(FPS)
+    with open('best_score.txt', "a") as file:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                file.write(f"{game.name} = {game.score}\n")
+                finished = True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                for ball in balls:
+                    if ball.x - ball.r < pos[0] < ball.x + ball.r and \
+                            ball.y - ball.r < pos[1] < ball.y + ball.r:  # клик попал в диапазон (площадь) шарика
+                        if ball in balls[:3]:
+                            game + 1
+                            print(f"{game.name} = {game.score}")
+                            pygame.display.update()
+                        else:
+                            game + 5
+                            print(f"{game.name} = {game.score}")
+                            pygame.display.update()
+
     for ball in balls[:3]:
         ball.new_ball()
-    for fig in balls[3:]:
-        fig.new_fig()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            finished = True
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-
-            for ball in balls:
-
-                if ball.x - ball.r < pos[0] < ball.x + ball.r and \
-                        ball.y - ball.r < pos[1] < ball.y + ball.r:  # и клик попал в диапазон (площадь) шарика
-                    if ball in balls[:3]:
-                        game + 1
-                        print(f"{game.name} = {game.score}")
-                        pygame.display.update()
-
-                    else:
-                        game + 5
-                        print(f"{game.name} = {game.score}")
-                        pygame.display.update()
-
-    for ball in balls[:3]:
         ball.move_ball()
     for fig in balls[3:]:
+        fig.new_fig()
         fig.move_fig()
-    pygame.display.update()
 
+    pygame.display.update()
     screen.fill(BLACK)
 
 pygame.quit()
